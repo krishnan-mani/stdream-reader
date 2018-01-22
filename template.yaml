@@ -1,6 +1,33 @@
+Transform: AWS::Serverless-2016-10-31
 Resources:
-  stdream-reader:
-    Type: AWS::Lambda::Function
+  stdreamReader:
+    Type: AWS::Serverless::Function
     Properties:
-      Runtime: nodejs6.10
       Handler: index.handler
+      Runtime: nodejs6.10
+      Events:
+        tableEvent:
+          Type: DynamoDB
+          Properties:
+            Stream: !GetAtt [table, StreamArn]
+            StartingPosition: TRIM_HORIZON
+            BatchSize: 5
+
+  table:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        -
+          AttributeName: id
+          AttributeType: S
+      KeySchema:
+        -
+          AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+
+
