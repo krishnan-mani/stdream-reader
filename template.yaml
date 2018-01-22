@@ -1,0 +1,6 @@
+Resources:
+  stdream-reader:
+    Type: AWS::Lambda::Function
+    Properties:
+      Runtime: nodejs6.10
+      Handler: index.handler

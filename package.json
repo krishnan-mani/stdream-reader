@@ -1,0 +1,12 @@
+{
+  "name": "stdream-reader",
+  "version": "1.0.0",
+  "description": "Respond to events from DynamoDB trigger using Lambda",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [ "dynamodb", "trigger", "lambda" ],
+  "author": "Krishnan M",
+  "license": "ISC"
+}
