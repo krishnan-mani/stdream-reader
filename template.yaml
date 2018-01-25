@@ -5,11 +5,16 @@ Resources:
     Properties:
       Handler: index.handler
       Runtime: nodejs6.10
+      Policies:
+        - DynamoDBStreamReadPolicy:
+            TableName: !Ref 'table'
+            StreamName: '*'
+
       Events:
         tableEvent:
           Type: DynamoDB
           Properties:
-            Stream: !GetAtt [table, StreamArn]
+            Stream: !GetAtt [ table, StreamArn ]
             StartingPosition: TRIM_HORIZON
             BatchSize: 5
 
