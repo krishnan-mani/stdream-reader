@@ -1,4 +1,3 @@
-
 Transform: AWS::Serverless-2016-10-31
 Resources:
   writeToTable:
@@ -8,16 +7,14 @@ Resources:
       Runtime: nodejs6.10
       Policies:
         - DynamoDBCrudPolicy:
-            TableName:
-              Fn::ImportValue
-                !Sub "${TableStackName}:table"
+            TableName: !ImportValue 'stdream-reader-test:table'
+
+      Environment:
+        Variables:
+          TABLE_NAME: !ImportValue 'stdream-reader-test:table'
 
       Events:
         EveryFiveMinutes:
           Type: Schedule
           Properties:
             Schedule: rate(5 minutes)
-
-Parameters:
-  TableStackName:
-    Type: String
