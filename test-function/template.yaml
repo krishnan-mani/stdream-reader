@@ -1,0 +1,23 @@
+
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  writeToTable:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs6.10
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName:
+              Fn::ImportValue
+                !Sub "${TableStackName}:table"
+
+      Events:
+        EveryFiveMinutes:
+          Type: Schedule
+          Properties:
+            Schedule: rate(5 minutes)
+
+Parameters:
+  TableStackName:
+    Type: String
