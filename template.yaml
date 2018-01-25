@@ -16,7 +16,7 @@ Resources:
           Properties:
             Stream: !GetAtt [ table, StreamArn ]
             StartingPosition: TRIM_HORIZON
-            BatchSize: 5
+            BatchSize: 20
 
   table:
     Type: AWS::DynamoDB::Table
@@ -35,4 +35,8 @@ Resources:
       StreamSpecification:
         StreamViewType: NEW_AND_OLD_IMAGES
 
-
+Outputs:
+  tableName:
+    Value: !Ref 'table'
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'table' ]]

@@ -4,7 +4,9 @@ require 'date'
 
 MAX_ITEM_COUNT = 25
 
-desc 'Put item in table'
+desc <<HERE
+Put multiple items in DynamoDB table (upto a maximum of 25) using batch_write_item
+HERE
 task :put_item, [:table, :region, :item_count] do |t, args|
 
   table = args.table or raise 'Table name not provided'
