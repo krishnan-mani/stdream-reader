@@ -1,4 +1,9 @@
 Transform: AWS::Serverless-2016-10-31
+Parameters:
+  StackName:
+    Type: String
+    Default: stdream-reader-test
+
 Resources:
   writeToTable:
     Type: AWS::Serverless::Function
@@ -7,11 +12,16 @@ Resources:
       Runtime: nodejs6.10
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !ImportValue 'stdream-reader-test:table'
+            TableName:
+              Fn::ImportValue:
+                !Sub "${StackName}:table"
 
       Environment:
         Variables:
-          TABLE_NAME: !ImportValue 'stdream-reader-test:table'
+          TABLE_NAME:
+            Fn::ImportValue:
+              !Sub "${StackName}:table"
+
       Events:
        EveryFiveMinAt0:
          Type: Schedule
@@ -33,3 +43,4 @@ Resources:
          Type: Schedule
          Properties:
            Schedule: cron(4,9,14,19,24,29,34,39,44,49,54,59 * * * ? *)
+
