@@ -7,15 +7,19 @@ exports.handler = (event, context, callback) => {
     let tableName = process.env.TABLE_NAME;
 
     let requests = [];
-    requests.push({
-        PutRequest: {
-            Item: {
-                "id": {
-                    S: Date.now().toString()
+
+    var i = 0;
+    for (i = 0; i < 25; i++) {
+        requests.push({
+            PutRequest: {
+                Item: {
+                    "id": {
+                        S: Date.now().toString() + "-" + i
+                    }
                 }
             }
-        }
-    });
+        });
+    };
 
     let batchWriteParams = {
         "RequestItems": {
