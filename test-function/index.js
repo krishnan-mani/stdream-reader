@@ -4,19 +4,27 @@ let AWS = require("aws-sdk");
 
 exports.handler = (event, context, callback) => {
     console.log("invoked at " + Date.now());
-
     let tableName = process.env.TABLE_NAME;
-    let dynamodb = new AWS.DynamoDB();
-    let params = {
-        Item: {
-            "id": {
-                S: Date.now().toString()
-            }
-        },
-        TableName: tableName
-    };
 
-    dynamodb.putItem(params, function (err, data) {
+    let requests = [];
+    requests.push({
+        PutRequest: {
+            Item: {
+                "id": {
+                    S: Date.now().toString()
+                }
+            }
+        }
+    });
+
+    let batchWriteParams = {
+        "RequestItems": {
+        }
+    };
+    batchWriteParams["RequestItems"][tableName] = requests;
+
+    let dynamodb = new AWS.DynamoDB();
+    dynamodb.batchWriteItem(batchWriteParams, function (err, data) {
         if (err) {
             console.error(err, err.stack);
             callback(err);
