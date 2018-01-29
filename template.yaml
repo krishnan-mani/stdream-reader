@@ -16,7 +16,7 @@ Resources:
           Properties:
             Stream: !GetAtt [ table, StreamArn ]
             StartingPosition: TRIM_HORIZON
-            BatchSize: 20
+            BatchSize: 25
 
   table:
     Type: AWS::DynamoDB::Table
@@ -25,10 +25,17 @@ Resources:
         -
           AttributeName: id
           AttributeType: S
+        -
+          AttributeName: offset
+          AttributeType: S
       KeySchema:
         -
           AttributeName: id
           KeyType: HASH
+        -
+          AttributeName: offset
+          KeyType: RANGE
+
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5

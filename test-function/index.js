@@ -9,12 +9,15 @@ exports.handler = (event, context, callback) => {
     let requests = [];
 
     var i = 0;
-    for (i = 0; i < 25; i++) {
+    for (i = 1; i <= 25; i++) {
         requests.push({
             PutRequest: {
                 Item: {
                     "id": {
-                        S: Date.now().toString() + "-" + i
+                        S: Date.now().toString()
+                    },
+                    "offset": {
+                        S: "" + i
                     }
                 }
             }
