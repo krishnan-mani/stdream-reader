@@ -14,7 +14,10 @@ task :put_item, [:table, :region, :item_count] do |t, args|
   item_count = [args.item_count.to_i || MAX_ITEM_COUNT, MAX_ITEM_COUNT].min
 
   items = 1.upto(item_count).collect do |n|
-    {put_request: {item: {"id": "#{DateTime.now.to_s}-#{n}"}}}
+    {put_request: {item: {
+        "id": "#{DateTime.now.to_s}",
+        "offset": "#{n}"
+    }}}
   end
 
   client = Aws::DynamoDB::Client.new(region: region)
