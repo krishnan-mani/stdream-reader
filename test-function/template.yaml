@@ -1,5 +1,29 @@
 Transform: AWS::Serverless-2016-10-31
 Resources:
+  writeEverySixMinutes:
+    Type: AWS::Events::Rule
+    Properties:
+      ScheduleExpression: "cron(0/6 * * * ? *)"
+      Targets:
+        -
+          Arn:
+            Fn::GetAtt:
+              - writeToTable
+              - Arn
+          Id: Write-v1
+
+  PermissionForEventToInvokeLambda:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName:
+        Ref: writeToTable
+      Action: lambda:InvokeFunction
+      Principal: "events.amazonaws.com"
+      SourceArn:
+        Fn::GetAtt:
+          - writeEverySixMinutes
+          - Arn
+
   writeToTable:
     Type: AWS::Serverless::Function
     Properties:
@@ -12,9 +36,3 @@ Resources:
       Environment:
         Variables:
           TABLE_NAME: !ImportValue 'stdream-reader-test:table'
-
-      Events:
-        EveryFiveMinutes:
-          Type: Schedule
-          Properties:
-            Schedule: rate(5 minutes)
