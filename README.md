@@ -10,7 +10,7 @@ Contents
 HOW-TO
 ===
 
-- Provision the workload
+- Provision the workload (using this [SAM transform](template.yaml))
 
 ```
 # Assuming "my-artifacts-bucket" is the S3 bucket used when packaging and deploying the SAM transform
@@ -38,7 +38,7 @@ stdream-reader $ rake put_item["my-table", "us-east-1", 20]
 
 ```
 
-- Provision the test fixture
+- Provision the test fixture (using this [SAM transform](test-function/template.yaml))
 
 ```
 stdream-reader $ cd test-function
